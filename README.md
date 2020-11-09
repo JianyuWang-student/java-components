@@ -8,7 +8,7 @@ If you're reading [Programming the Internet of Things: An Introduction to Buildi
 
 A solution set is available, although I haven't yet released it. Stay tuned for updates on this topic.
 
-## This repository aligns to exercises in my Programming the Internet of Things book
+## This repository aligns to exercises Programming the Internet of Things
 These components are all written in Java 11 (or higher), and correlate to the exercises designed for the Gateway Device Application (GDA) specified in my book [Programming the Internet of Things: An Introduction to Building Integrated, Device to Cloud IoT Solutions](https://learning.oreilly.com/library/view/programming-the-internet/9781492081401).
 
 ## How to navigate the directory structure for this repository
