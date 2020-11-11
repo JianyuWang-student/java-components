@@ -7,7 +7,7 @@
  * Copyright (c) 2020 by Andrew D. King
  */ 
 
-package programmingtheiot.part02.integration.connection;
+package programmingtheiot.part04.integration.connection;
 
 import static org.junit.Assert.*;
 
@@ -107,8 +107,8 @@ public class SmtpClientConnectorTest
 		
 		String ssdJson = DataUtil.getInstance().systemStateDataToJson(ssd);
 		
-		assertTrue(this.smtpClient.sendPostRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, ssdJson, DEFAULT_TIMEOUT));
-		assertTrue(this.smtpClient.sendGetRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, DEFAULT_TIMEOUT));
+		assertTrue(this.smtpClient.sendPostRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, false, ssdJson, DEFAULT_TIMEOUT));
+		assertTrue(this.smtpClient.sendGetRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, false, DEFAULT_TIMEOUT));
 	}
 	
 	/**
@@ -126,8 +126,8 @@ public class SmtpClientConnectorTest
 		
 		String ssdJson = DataUtil.getInstance().systemStateDataToJson(ssd);
 		
-		assertTrue(this.smtpClient.sendPutRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, ssdJson, DEFAULT_TIMEOUT));
-		assertTrue(this.smtpClient.sendGetRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, DEFAULT_TIMEOUT));
+		assertTrue(this.smtpClient.sendPutRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, false, ssdJson, DEFAULT_TIMEOUT));
+		assertTrue(this.smtpClient.sendGetRequest(ResourceNameEnum.GDA_MGMT_STATUS_MSG_RESOURCE, false, DEFAULT_TIMEOUT));
 	}
 	
 }
