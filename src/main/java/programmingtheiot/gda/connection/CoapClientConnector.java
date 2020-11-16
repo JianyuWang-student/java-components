@@ -99,6 +99,14 @@ public class CoapClientConnector implements IRequestResponseClient
 		return false;
 	}
 
+	public void clearEndpointPath()
+	{
+	}
+	
+	public void setEndpointPath(ResourceNameEnum resource)
+	{
+	}
+	
 	@Override
 	public boolean startObserver(ResourceNameEnum resource, int ttl)
 	{
