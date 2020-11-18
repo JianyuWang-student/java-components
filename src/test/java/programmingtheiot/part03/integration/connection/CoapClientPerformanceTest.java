@@ -51,12 +51,11 @@ public class CoapClientPerformanceTest
 	private static final Logger _Logger =
 		Logger.getLogger(CoapClientPerformanceTest.class.getName());
 	
-	public static final int MAX_TEST_RUNS = 100000;
+	public static final int MAX_TEST_RUNS = 10000;
 	
 	// member var's
 	
 	private CoapClientConnector coapClient = null;
-	private CoapClient coapClientPrev = null;
 
 	private IDataMessageListener dataMsgListener = null;
 	
@@ -89,7 +88,6 @@ public class CoapClientPerformanceTest
 		this.dataMsgListener = new DefaultDataMessageListener();
 		
 		this.coapClient.setDataMessageListener(this.dataMsgListener);
-//		this.coapClientPrev = new CoapClient("coap://localhost:5683");
 	}
 	
 	/**
@@ -105,15 +103,28 @@ public class CoapClientPerformanceTest
 	/**
 	 * 
 	 */
-	//@Test
+	@Test
+	public void testPostRequestCon()
+	{
+		execTestPost(MAX_TEST_RUNS, true);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testPostRequestNon()
+	{
+		execTestPost(MAX_TEST_RUNS, false);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
 	public void testPutRequestCon()
 	{
-		SensorData sd = new SensorData();
-		sd.setValue(22.1f);
-		
-		String ssdJson = DataUtil.getInstance().sensorDataToJson(sd);
-		
-		execTestPut(true, ssdJson);
+		execTestPut(MAX_TEST_RUNS, true);
 	}
 	
 	/**
@@ -122,50 +133,43 @@ public class CoapClientPerformanceTest
 	@Test
 	public void testPutRequestNon()
 	{
-		SensorData sd = new SensorData();
-		sd.setValue(22.1f);
-		
-		String ssdJson = DataUtil.getInstance().sensorDataToJson(sd);
-		
-		execTestPut(false, ssdJson);
+		execTestPut(MAX_TEST_RUNS, false);
 	}
 	
 	// private
 	
-	public void execTestPut(boolean enableCON, String payload)
+	private void execTestPost(int maxTestRuns, boolean enableCON)
 	{
-		this.coapClient.setEndpointPath(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE);
-		
+		SensorData sd = new SensorData();
+		String payload = DataUtil.getInstance().sensorDataToJson(sd);
+				
 		long startMillis = System.currentTimeMillis();
 		
-		for (int sequenceNo = 1; sequenceNo <= MAX_TEST_RUNS; sequenceNo++) {
-			this.coapClient.sendPutRequest(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, enableCON, payload, DEFAULT_TIMEOUT);
-		}
-		
-		long endMillis = System.currentTimeMillis();
-		long elapsedMillis = endMillis - startMillis;
-		
-		this.coapClient.clearEndpointPath();
-		
-		_Logger.info("PUT message - useCON " + enableCON + " [" + MAX_TEST_RUNS + "]: " + elapsedMillis + " ms");
-	}
-	
-	public void execTestPost(boolean enableCON, String payload)
-	{
-		this.coapClient.setEndpointPath(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE);
-		
-		long startMillis = System.currentTimeMillis();
-		
-		for (int sequenceNo = 1; sequenceNo <= MAX_TEST_RUNS; sequenceNo++) {
+		for (int seqNo = 0; seqNo < maxTestRuns; seqNo++) {
 			this.coapClient.sendPostRequest(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, enableCON, payload, DEFAULT_TIMEOUT);
 		}
 		
 		long endMillis = System.currentTimeMillis();
 		long elapsedMillis = endMillis - startMillis;
+				
+		_Logger.info("POST message - useCON = " + enableCON + " [" + maxTestRuns + "]: " + elapsedMillis + " ms");
+	}
+	
+	private void execTestPut(int maxTestRuns, boolean enableCON)
+	{
+		SensorData sd = new SensorData();
+		String payload = DataUtil.getInstance().sensorDataToJson(sd);
+				
+		long startMillis = System.currentTimeMillis();
 		
-		this.coapClient.clearEndpointPath();
+		for (int seqNo = 0; seqNo < maxTestRuns; seqNo++) {
+			this.coapClient.sendPutRequest(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, enableCON, payload, DEFAULT_TIMEOUT);
+		}
 		
-		_Logger.info("POST message - useCON " + enableCON + " [" + MAX_TEST_RUNS + "]: " + elapsedMillis + " ms");
+		long endMillis = System.currentTimeMillis();
+		long elapsedMillis = endMillis - startMillis;
+				
+		_Logger.info("PUT message - useCON = " + enableCON + " [" + maxTestRuns + "]: " + elapsedMillis + " ms");
 	}
 	
 }
